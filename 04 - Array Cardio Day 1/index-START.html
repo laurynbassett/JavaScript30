@@ -31,28 +31,94 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    const sixteenthCenturyInventors = inventors.filter(inventor => inventor.year > 1499 && inventor.year < 1600)
+
+    console.table(sixteenthCenturyInventors)
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+    const inventorNames = inventors.map(inventor => `${inventor.first} ${inventor.last}`)
+
+    console.table(inventorNames)
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    const inventorsByBirthdate = inventors.sort((curr,next) => curr.year > next.year ? 1 : -1)
+
+    console.table(inventorsByBirthdate)
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
+    const inventorsYearsTotal = inventors.reduce((total, inventor) => {
+      return total + (inventor.passed - inventor.year)
+    }, 0)
+
+    console.log('INVENTOR YEARS TOTAL: ', inventorsYearsTotal)
 
     // 5. Sort the inventors by years lived
+    // const inventorsByYearsLived = inventors.reduce((a, c) => {
+    //     let currentYearsLived = c.passed - c.year
+    //     c.age = currentYearsLived
+
+    //     if (a.length >= 1) {
+    //       let idx = 0
+    //       let comparison = a[idx].passed - a[idx].year
+
+    //       while (currentYearsLived < comparison && idx <= a.length - 1) {
+    //         idx++
+    //         if (idx <= a.length - 1) {
+    //           comparison = a[idx].passed - a[idx].year
+    //         }
+    //       }
+    //       a.splice(idx, 0, c)
+    //     } else {
+    //       a.push(c)
+    //     }
+    //     return a
+    //   }, [])
+
+    const inventorsByYearsLived = inventors.sort((curr, next) => {
+      const currYears = curr.passed - curr.year
+      const nextYears = next.passed - next.year
+      return currYears > nextYears ? -1 : 1
+    })
+
+    console.table(inventorsByYearsLived)
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+    // const category = document.querySelector('.mw-category')
+    // const links = Array.from(category.querySelector('a'))
+    // const de = links.reduce((a,c)=> {
+    //   if (c.textContent.includes('de')) a.push(c.textContent)
+    // }, [])
+
+    // console.log('DE BLVDs IN PARIS: ',de)
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const peopleByLastName = people.sort((curr, next) => {
+      const [currLast, currFirst] = curr.split(', ')
+      const [nextLast, nextFirst] = next.split(', ')
+      return currLast > nextLast ? 1 : -1
+    })
+
+    console.table(peopleByLastName)
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const sumOfInstances = data.reduce((obj, item)=> {
+      if (!obj[item]) {
+        obj[item] = 0
+      }
+      obj[item]++
+      return obj
+    }, {})
+
+    console.log('SUM OF INSTANCES: ', sumOfInstances)
 
   </script>
 </body>
