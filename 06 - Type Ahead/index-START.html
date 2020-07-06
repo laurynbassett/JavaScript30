@@ -17,6 +17,55 @@
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
 
+const searchInput = document.querySelector('.search')
+const suggestions = document.querySelector('.suggestions')
+
+const places = []
+
+// Fetch places from endpoint
+fetch(endpoint)
+  .then(blob => blob.json())
+  .then(data => places.push(...data))
+
+// get array of all places that match search term
+function findMatches(searchTerm, places) {
+  return places.filter(place => {
+    const regex = new RegExp(searchTerm, 'gi')
+    return place.city.match(regex) || place.state.match(regex)
+  })
+}
+
+// return population number w/ commas
+function numberWithCommas(num) {
+  const regex = /(\d)(?=(\d{3})+(?!\d))/g;
+  return num.toString().replace(regex, '$1,')
+}
+
+// filter places and add to search results
+function filterSearch() {
+  const searchTerm = this.value
+  const matches = findMatches(searchTerm, places)
+
+  const matchesHTML = matches.map(place => {
+    const regex = new RegExp(searchTerm, 'gi')
+    const city = place.city.replace(regex,  `<span class="hl">${this.value}</span>`)
+    const state = place.state.replace(regex, `<span class="hl">${this.value}</span>`)
+    const population = numberWithCommas(place.population)
+    return `
+    <li>
+    <span class="name">${city}, ${state}</span>
+    <span class="population">${population}</span>
+    </li>
+    `
+  }).join('')
+
+  suggestions.innerHTML = matchesHTML
+}
+
+searchInput.addEventListener('input', filterSearch)
+// searchInput.addEventListener('change', filterSearch)
+// searchInput.addEventListener('keyup', filterSearch)
+
 </script>
 </body>
 </html>
