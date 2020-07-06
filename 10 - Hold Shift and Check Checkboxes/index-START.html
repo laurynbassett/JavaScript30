@@ -96,6 +96,26 @@
   </div>
 
 <script>
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]')
+  let lastSelectedIdx = 0
+
+  function handleCheck(e) {
+    const clickedIdx = Array.from(checkboxes).findIndex(check => check.parentNode.innerText === e.target.parentNode.innerText)
+    console.log(e)
+
+    // if shift key is down and user clicked box
+    if (e.shiftKey && this.checked) {
+      const start = clickedIdx > lastSelectedIdx ? lastSelectedIdx : clickedIdx
+      const end = clickedIdx > lastSelectedIdx ? clickedIdx : lastSelectedIdx
+
+      for (let i = start; i < end; i++) {
+        checkboxes[i].checked = true
+      }
+    } else lastSelectedIdx = clickedIdx
+  }
+
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
+
 </script>
 </body>
 </html>
