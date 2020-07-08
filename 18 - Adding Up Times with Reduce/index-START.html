@@ -182,6 +182,24 @@
     </li>
   </ul>
 <script>
+
+  const timeNodes = Array.from(document.querySelectorAll('[data-time]'))
+
+  const timeInSecs = timeNodes.reduce((sum, currTime) => {
+    // get time dataset property and destructure into mins & secs, then return floating point number of each
+    const [mins, secs] = currTime.dataset.time.split(':').map(parseFloat)
+    // return sum + currTime converted to seconds
+    return sum += ((mins * 60) + secs)
+  }, 0)
+
+  const hours = Math.floor(timeInSecs / 3600)
+  let secondsLeft = timeInSecs % 3600 // seconds left after taking out hours
+
+  const mins = Math.floor(secondsLeft / 60)
+  secondsLeft = secondsLeft % 60 // seconds left after taking out mins
+
+  console.log(`Total Video Time: ${hours}:${mins}:${secondsLeft}`)
+
 </script>
 </body>
 </html>
