@@ -4,9 +4,32 @@
   <meta charset="UTF-8">
   <title>Key Detection</title>
   <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
 </head>
 <body>
 <script>
+  // document.addEventListener('keyup', e=> {
+  //   console.log(e.key)
+  // })
+    const pressed = []
+    const secretCode = 'secret'
+
+  $(document).ready(function () {
+    $(document).keyup(e => {
+      pressed.push(e.key)
+      pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length)
+      console.log('PRESSED: ', pressed.join(''))
+      if (pressed.join('').includes(secretCode)) {
+        console.log('DING DING!')
+        cornify_add()
+      }
+    })
+
+
+  })
+
+
 </script>
 </body>
 </html>
