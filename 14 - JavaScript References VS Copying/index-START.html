@@ -27,12 +27,37 @@
     // So, how do we fix this? We take a copy instead!
 
     // one way
+    const sliceCopy = players.slice()
+    console.log('slice copy: ', sliceCopy)
 
     // or create a new array and concat the old one in
+    const concatCopy = [].concat(players)
+    console.log('concat copy: ', concatCopy)
 
     // or use the new ES6 Spread
+    const spreadCopy = [...players]
+    console.log('spread copy: ', spreadCopy)
+
+    // or with Array.from
+    const arrayCopy = Array.from(players)
+    console.log('array copy: ', arrayCopy)
 
     // now when we update it, the original one isn't changed
+    sliceCopy.push('Lauryn')
+    console.log('slice copy after push', sliceCopy)
+    console.log('players after pushing to slice copy: ', players)
+
+    concatCopy.push('Lauryn')
+    console.log('concat copy after push: ', concatCopy)
+    console.log('players after pushing to concat copy: ', players)
+
+    spreadCopy.push('Lauryn')
+    console.log('spread copy after push: ', spreadCopy)
+    console.log('players after pushing to spread copy: ', players)
+
+    arrayCopy.push('Lauryn')
+    console.log('array copy after push: ', spreadCopy)
+    console.log('players after pushing to array copy: ', players)
 
     // The same thing goes for objects, let's say we have a person object
 
@@ -43,12 +68,25 @@
     };
 
     // and think we make a copy:
+    const copyObj = Object.assign({}, person)
+    console.log('copy object: ', copyObj)
 
     // how do we take a copy instead?
 
     // We will hopefully soon see the object ...spread
+    const spreadObj = {...person}
+    console.log('spread object: ', spreadObj)
 
     // Things to note - this is only 1 level deep - both for Arrays and Objects. lodash has a cloneDeep method, but you should think twice before using it.
+
+    const jsonObj = JSON.parse(JSON.stringify(person));
+    console.log('JSON object: ', jsonObj)
+
+    person.number = 10
+    console.log('copy object: ', copyObj)
+    console.log('spread object: ', spreadObj)
+    console.log('JSON object: ', jsonObj)
+    console.log('person object: ', person)
 
   </script>
 
