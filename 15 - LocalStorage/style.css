@@ -58,11 +58,11 @@ h2 {
 }
 
 .plates input {
-  display: none;
+  display: none; /* to allow for custom checkbox below */
 }
 
 .plates input + label:before {
-  content: "⬜️";
+  content: "⬜️"; /* custom checkbox */
   margin-right: 10px;
 }
 
@@ -74,8 +74,19 @@ h2 {
   margin-top: 20px;
 }
 
-.add-items input {
+.add-items input,
+.form-buttons button {
   padding: 10px;
   outline: 0;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.form-buttons button {
+  margin-top: 1em;
 }

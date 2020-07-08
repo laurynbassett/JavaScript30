@@ -23,12 +23,120 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <div class="form-buttons">
+      <button type="button" name="clear-all">Clear All</button>
+      <button type="button" name="check-all">Check All</button>
+      <button type="button" name="uncheck-all">Uncheck All</button>
+    </div>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const clearAllButton = document.querySelector('button[name="clear-all"]')
+  const checkAllButton = document.querySelector('button[name="check-all"]')
+  const uncheckAllButton = document.querySelector('button[name="uncheck-all"]')
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  // ADD ITEM TO CHECKLIST
+  function addItem(e) {
+    e.preventDefault()
+    const text = this.querySelector('[name="item"]').value
+    const item = {text, done: false}
+
+    // push item to items array
+    items.push(item)
+
+    // add item to checklist in DOM
+    populateList(items, itemsList)
+
+    // add item to items in local storage
+    localStorage.setItem('items', JSON.stringify(items))
+
+    // reset input every time new item is added
+    this.reset()
+  }
+
+  // POPULATE CHECKLIST
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
+      return `
+        <li>
+          <input type="checkbox" id=item${i} data-index=${i} ${plate.done ? 'checked' : ''}>
+          <label for=item${i}>${plate.text}</label><br>
+        </li>
+      `
+    }).join('')
+  }
+
+  // TOGGLE ITEM CHECKED
+  function toggleDone(e) {
+    // event listener listens for all clicks inside ul, so ignore unless click on input
+    if (!(e.target.matches('input'))) return
+
+    const itemIdx = e.target.dataset.index
+
+    // toggle item's done property
+    items[itemIdx].done = !items[itemIdx].done
+
+    // every time make a change, mirror it in local storage
+    localStorage.setItem('items', JSON.stringify(items))
+
+    // re-render checklist in the DOM
+    populateList(items, itemsList)
+  }
+
+  // TODO: make buttons for: clear, check all, uncheck all
+
+  // Clear all checklist items
+  function clearAll(e) {
+    console.log(e)
+
+    items.splice(0, items.length)
+    console.log(items)
+
+    // clear items in local storage
+    localStorage.setItem('items', JSON.stringify(items))
+
+    // re-render checklist in the DOM
+    populateList(items, itemsList)
+  }
+
+  // Check all checklist items
+  function checkAll(e) {
+    // set done property to true for all items
+    items.forEach(item => item.done = true)
+    console.log(items)
+
+    // update items in local storage
+    localStorage.setItem('items', JSON.stringify(items))
+
+    // re-render checklist in the DOM
+    populateList(items, itemsList)
+  }
+
+  // Uncheck all checklist items
+  function uncheckAll(e) {
+    // set done property to false for all items
+    items.forEach(item => item.done = false)
+    console.log(items)
+
+    // update items in local storage
+    localStorage.setItem('items', JSON.stringify(items))
+
+    // re-render checklist in the DOM
+    populateList(items, itemsList)
+  }
+
+  // EVENT LISTENERS
+  addItems.addEventListener('submit', addItem)
+  itemsList.addEventListener('click', toggleDone)
+  clearAllButton.addEventListener('click', clearAll)
+  checkAllButton.addEventListener('click', checkAll)
+  uncheckAllButton.addEventListener('click', uncheckAll)
+
+  // populate checklist in the DOM
+  populateList(items, itemsList)
 
 </script>
 
