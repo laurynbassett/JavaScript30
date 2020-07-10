@@ -17,9 +17,9 @@
   html {
     box-sizing: border-box;
   }
-  
-  *, *:before, *:after { 
-    box-sizing: inherit; 
+
+  *, *:before, *:after {
+    box-sizing: inherit;
   }
 
   div {
@@ -42,7 +42,20 @@
 
 <button></button>
 <script>
+  const divs = document.querySelectorAll('div')
 
+  // event capture goes through the event top down (doc, body, div 1, div 2, div 3...)
+  // bubbling goes down up (starting at most nested element) triggering events as it goes up
+  function logText(e) {
+    console.log(this.classList.value)
+    e.stopPropagation() // stop bubbling
+  }
+
+  divs.forEach(div => div.addEventListener('click', logText, {once: true}))
+  // addEventListener options:
+  // { capture: true } - stops after first event (so will log outermost div that has listener)
+  // { once : true } - listens for a click then unbinds itself so the event will fire only once; same as removing listener after first time
+  // once is good for things like store checkouts
 </script>
 </body>
 </html>
