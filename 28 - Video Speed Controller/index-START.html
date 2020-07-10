@@ -15,6 +15,35 @@
   </div>
 
 <script>
+  const speed = document.querySelector('.speed')
+  const speedBar = document.querySelector('.speed-bar')
+  const video = document.querySelector('.flex')
+  let isMouseDown = false
+
+  function onMouseMove(e) {
+    if (!isMouseDown) return
+    const y = e.pageY - this.offsetTop
+    const speedPercent = y / this.offsetHeight
+    const min = 0.4
+    const max = 4
+    const playbackRate = (speedPercent * (max - min) + min).toFixed(1)
+    console.log(playbackRate)
+    speedBar.style.height = `${speedPercent * 100}%`
+    speedBar.textContent = `${playbackRate}x`
+    video.playbackRate = playbackRate
+  }
+
+  function onMouseDown() {
+    isMouseDown = true
+  }
+
+  function onMouseUp() {
+    isMouseDown = false
+  }
+
+  speed.addEventListener('mousemove', onMouseMove)
+  speed.addEventListener('mousedown', onMouseDown)
+  speed.addEventListener('mouseup', onMouseUp)
 </script>
 </body>
 </html>
