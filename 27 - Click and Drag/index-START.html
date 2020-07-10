@@ -35,6 +35,40 @@
   </div>
 
 <script>
+  const slider = document.querySelector('.items')
+  let mouseIsDown = false
+  let startX;
+  let scrollLeft;
+
+  function onMouseDown(e) {
+    mouseIsDown = true
+    slider.classList.add('active')
+    startX = e.pageX - slider.offsetLeft
+    scrollLeft = slider.scrollLeft
+  }
+
+  function onMouseLeave(e) {
+    mouseIsDown = false
+    slider.classList.remove('active')
+  }
+
+  function onMouseUp(e) {
+    mouseIsDown = false
+    slider.classList.remove('active')
+  }
+
+  function onMouseMove(e) {
+    if (!mouseIsDown) return
+    e.preventDefault()
+    const x = e.pageX - slider.offsetLeft
+    const walk = (x - startX) * 3
+    slider.scrollLeft = scrollLeft - walk
+  }
+
+  slider.addEventListener('mousedown', onMouseDown)
+  slider.addEventListener('mouseleave', onMouseLeave)
+  slider.addEventListener('mouseup', onMouseUp)
+  slider.addEventListener('mousemove', onMouseMove)
 </script>
 
   </body>
