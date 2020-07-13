@@ -68,6 +68,10 @@
       transition-timing-function: cubic-bezier(0.1, 2.7, 1, 1);
     }
 
+    .no-transition {
+      transition: none;
+    }
+
   </style>
 
   <script>
@@ -75,23 +79,42 @@
     const minuteHand = document.querySelector('.min-hand')
     const hourHand = document.querySelector('.hour-hand')
 
-    function setDate() {
-      const date = new Date()
+    function setTime() {
+      const currTime = new Date()
 
-      const seconds = date.getSeconds()
-      const secondsDegrees = ((seconds / 60) * 360) + 90
+      const seconds = currTime.getSeconds()
+      const secondsDegrees = (seconds * 6) + 90 // 6 deg per sec
       secondHand.style.transform = `rotate(${secondsDegrees}deg)`
+      // prevent weird transition b/w 60 & 0 secs
+      if (secondsDegrees === 90) {
+        secondHand.classList.add('no-transition')
+      } else {
+        secondHand.classList.remove('no-transition')
+      }
 
-      const minutes = date.getMinutes()
-      const minutesDegrees = ((minutes / 60) * 360) + 90
+      const minutes = currTime.getMinutes()
+      const minutesDegrees = (minutes * 6) + (seconds * 0.1) + 90 // 6 deg per min => 0.1 deg per sec (on min hand)
       minuteHand.style.transform = `rotate(${minutesDegrees}deg)`
+      // prevent weird transition b/w 60 & 0 mins
+      if (minutesDegrees === 90) {
+        minuteHand.classList.add('no-transition')
+      } else {
+        minuteHand.classList.remove('no-transition')
+      }
 
-      const hours = date.getHours()
-      const hoursDegrees = ((hours / 12) * 360) + 90
+      const hours = currTime.getHours()
+      let hoursDegrees = (hours * 30) + (minutes * 0.5) + 90 // 30 deg per hour => 0.5 deg per min (on hr hand)
+      hoursDegrees = hours > 12 ? Math.abs(360 - hoursDegrees) : hoursDegrees // if hour is > 12 subtract from 360 to get the portion w/ 12
       hourHand.style.transform = `rotate(${hoursDegrees}deg)`
+      // prevent weird transition b/w 60 & 0 hours
+      if (hoursDegrees === 90) {
+        hourHand.classList.add('no-transition')
+      } else {
+        hourHand.classList.remove('no-transition')
+      }
     }
 
-    setInterval(setDate, 1000)
+    setInterval(setTime, 1000)
 
   </script>
 </body>
